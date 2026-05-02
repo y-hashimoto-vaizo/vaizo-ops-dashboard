@@ -15,7 +15,48 @@
   };
 
   // ============ BOOT ============
-  document.addEventListener('DOMContentLoaded', init);
+  document.addEventListener('DOMContentLoaded', async () => {
+    if (await checkGate()) init();
+  });
+
+  // ============ PASSWORD GATE ============
+  async function sha256Hex(text) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function checkGate() {
+    const gate = document.getElementById('gate');
+    if (!CFG.passHash) {
+      gate.classList.add('gate--hidden');
+      return Promise.resolve(true);
+    }
+    if (localStorage.getItem('vaizo_ops_auth') === CFG.passHash) {
+      gate.classList.add('gate--hidden');
+      return Promise.resolve(true);
+    }
+
+    return new Promise((resolve) => {
+      const form = document.getElementById('gateForm');
+      const input = document.getElementById('gateInput');
+      const err = document.getElementById('gateError');
+      setTimeout(() => input.focus(), 0);
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const hex = await sha256Hex(input.value);
+        if (hex === CFG.passHash) {
+          localStorage.setItem('vaizo_ops_auth', CFG.passHash);
+          gate.classList.add('gate--hidden');
+          resolve(true);
+        } else {
+          err.hidden = false;
+          input.value = '';
+          input.focus();
+        }
+      });
+    });
+  }
 
   function init() {
     document.getElementById('sheetLink').href = CFG.spreadsheetUrl || '#';

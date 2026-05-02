@@ -12,6 +12,19 @@
 </head>
 <body>
 
+  <!-- ============ PASSWORD GATE ============ -->
+  <div id="gate" class="gate">
+    <div class="gate__inner">
+      <p class="gate__brand">VAIZO &nbsp;/&nbsp; OPERATIONS</p>
+      <h2 class="gate__title">合言葉を入力してください</h2>
+      <form id="gateForm" class="gate__form" autocomplete="off">
+        <input id="gateInput" type="password" class="gate__input" placeholder="PASSWORD" autofocus>
+        <button type="submit" class="btn btn--solid">ENTER</button>
+      </form>
+      <p id="gateError" class="gate__error" hidden>合言葉が違います</p>
+    </div>
+  </div>
+
   <!-- ============ HERO ============ -->
   <header class="hero">
     <div class="hero__inner">
