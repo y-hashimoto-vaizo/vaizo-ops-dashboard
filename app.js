@@ -32,37 +32,15 @@
     const params = new URLSearchParams(location.search);
     if (params.get('owner')) STATE.filter.owner = params.get('owner');
 
-    if (!CFG.apiUrl) {
-      showSetupGuide();
-      return;
-    }
-
     loadAndRender(false);
     setInterval(() => loadAndRender(false), CFG.refreshIntervalMs || 300000);
-  }
-
-  // ============ SETUP GUIDE (apiUrl未設定時) ============
-  function showSetupGuide() {
-    document.getElementById('updatedAt').textContent = '未設定';
-    showStatus('config.js の apiUrl が空です。GAS Web App をデプロイして URL を貼り付け、push してください。', 'warn');
-
-    const html = `
-      <div class="kpi"><div class="kpi__label">SETUP</div><div class="kpi__value">1</div><div class="kpi__sub">GAS デプロイ</div></div>
-      <div class="kpi"><div class="kpi__label">SETUP</div><div class="kpi__value">2</div><div class="kpi__sub">URL を config.js に貼付</div></div>
-      <div class="kpi"><div class="kpi__label">SETUP</div><div class="kpi__value">3</div><div class="kpi__sub">git push</div></div>
-      <div class="kpi"><div class="kpi__label">SETUP</div><div class="kpi__value">4</div><div class="kpi__sub">このページを再読込</div></div>
-    `;
-    document.getElementById('kpiGrid').innerHTML = html;
-
-    const tbody = document.getElementById('tasksTbody');
-    tbody.innerHTML = '<tr><td colspan="8" class="tasks-table__empty">セットアップ完了後、ここに TASKS が表示されます。<br>詳しくは README.md を参照してください。</td></tr>';
   }
 
   // ============ DATA LOAD ============
   async function loadAndRender(isManual) {
     if (isManual) showStatus('読み込み中…', 'info');
     try {
-      const res = await fetch(CFG.apiUrl + '?_=' + Date.now(), { cache: 'no-store' });
+      const res = await fetch('./data.json?_=' + Date.now(), { cache: 'no-store' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       if (data.error) throw new Error(data.error);
@@ -73,7 +51,7 @@
       document.getElementById('updatedAt').textContent = formatDateTime(new Date(data.updatedAt || Date.now()));
     } catch (err) {
       console.error(err);
-      showStatus('データ取得に失敗しました: ' + err.message, 'warn');
+      showStatus('data.json が読み込めません。スプレッドシートに変更があった場合は Claude に「ダッシュボード更新」と頼んでください。', 'warn');
     }
   }
 
