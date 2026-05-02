@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>VAIZO OPS / Operations Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div class="hero__inner">
+      <p class="hero__brand">VAIZO &nbsp;/&nbsp; OPERATIONS</p>
+      <h1 class="hero__mission">
+        生存のためのシゴトから人類を解放し、<br>
+        みんながスキに没頭できる世界をつくる。
+      </h1>
+      <div class="hero__meta">
+        <div class="hero__meta-left">
+          <span class="hero__meta-label">LAST SYNC</span>
+          <span id="updatedAt" class="hero__meta-value">—</span>
+        </div>
+        <div class="hero__meta-actions">
+          <a id="sheetLink" class="btn btn--ghost" href="#" target="_blank" rel="noopener">スプレッドシートを開く</a>
+          <button id="refreshBtn" class="btn btn--solid" type="button">最新を取得</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ STATUS ============ -->
+  <div id="statusBar" class="status-bar" hidden></div>
+
+  <main class="main">
+
+    <!-- ============ KPI ============ -->
+    <section class="section">
+      <div class="section__head">
+        <h2 class="section__title">KPI</h2>
+        <p class="section__sub">全社タスクの状態サマリー</p>
+      </div>
+      <div id="kpiGrid" class="kpi-grid">
+        <div class="kpi kpi--skeleton"></div>
+        <div class="kpi kpi--skeleton"></div>
+        <div class="kpi kpi--skeleton"></div>
+        <div class="kpi kpi--skeleton"></div>
+        <div class="kpi kpi--skeleton"></div>
+      </div>
+    </section>
+
+    <!-- ============ DEADLINE ALERTS ============ -->
+    <section class="section">
+      <div class="section__head">
+        <h2 class="section__title">締切アラート</h2>
+        <p class="section__sub">超過 / 今日 / 7日以内</p>
+      </div>
+      <div id="alertGrid" class="alert-grid"></div>
+    </section>
+
+    <!-- ============ GOALS TREE ============ -->
+    <section class="section">
+      <div class="section__head">
+        <h2 class="section__title">GOALS</h2>
+        <p class="section__sub">年 / Q / 月 ツリー進捗</p>
+      </div>
+      <div id="goalsTree" class="goals-tree"></div>
+    </section>
+
+    <!-- ============ MATRIX ============ -->
+    <section class="section">
+      <div class="section__head">
+        <h2 class="section__title">担当者 × 状態</h2>
+        <p class="section__sub">VAIZER 別の積み上がり</p>
+      </div>
+      <div id="matrix" class="matrix-wrap"></div>
+    </section>
+
+    <!-- ============ DEPT BARS ============ -->
+    <section class="section">
+      <div class="section__head">
+        <h2 class="section__title">事業部別 進捗</h2>
+        <p class="section__sub">未着手 / 進行中 / 完了 / 保留</p>
+      </div>
+      <div id="deptBars" class="dept-bars"></div>
+    </section>
+
+    <!-- ============ TASKS TABLE ============ -->
+    <section class="section">
+      <div class="section__head">
+        <h2 class="section__title">TASKS</h2>
+        <p class="section__sub">検索・フィルタ・締切順ソート可</p>
+      </div>
+
+      <div class="filter-bar">
+        <input id="searchInput" class="filter-bar__input" type="text" placeholder="検索（ID / タイトル / 次の1手）" autocomplete="off">
+        <select id="filterDept" class="filter-bar__select"><option value="">全事業部</option></select>
+        <select id="filterOwner" class="filter-bar__select"><option value="">全担当</option></select>
+        <select id="filterStatus" class="filter-bar__select"><option value="">全状態</option></select>
+        <select id="filterPriority" class="filter-bar__select"><option value="">全優先度</option></select>
+        <select id="sortKey" class="filter-bar__select">
+          <option value="deadline">締切が近い順</option>
+          <option value="priority">優先度順</option>
+          <option value="id">ID順</option>
+          <option value="status">状態順</option>
+        </select>
+        <button id="resetFilter" class="btn btn--ghost btn--sm" type="button">リセット</button>
+      </div>
+
+      <div class="table-meta">
+        <span id="taskCount">—</span>
+      </div>
+
+      <div class="table-wrap">
+        <table id="tasksTable" class="tasks-table">
+          <thead>
+            <tr>
+              <th class="tasks-table__id">ID</th>
+              <th>タイトル</th>
+              <th>事業部</th>
+              <th>担当</th>
+              <th>状態</th>
+              <th>優先度</th>
+              <th>締切</th>
+              <th>次の1手</th>
+            </tr>
+          </thead>
+          <tbody id="tasksTbody">
+            <tr><td colspan="8" class="tasks-table__empty">読み込み中…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <p class="footer__line">VAIZO Inc.&nbsp;&nbsp;/&nbsp;&nbsp;Operations OS&nbsp;&nbsp;/&nbsp;&nbsp;Source: VAIZO_OPS_Sheet</p>
+      <p class="footer__line footer__line--mono">v1.0.0 &nbsp;&nbsp;/&nbsp;&nbsp; <a href="https://github.com/y-hashimoto-vaizo/vaizo-ops-dashboard" target="_blank" rel="noopener">github</a></p>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

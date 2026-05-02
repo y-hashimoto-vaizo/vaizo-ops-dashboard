@@ -1,0 +1,592 @@
+/* =========================================================
+   VAIZO OPS Dashboard
+   Design Policy: 白黒エディトリアル × ミッション主義
+   ========================================================= */
+
+:root {
+  --color-bg: #ffffff;
+  --color-fg: #0a0a0a;
+  --color-muted: #6b6b6b;
+  --color-line: #0a0a0a;
+  --color-line-soft: #e3e3e3;
+  --color-bg-invert: #0a0a0a;
+  --color-fg-invert: #ffffff;
+
+  /* Status colors（白黒の中の最小限のシグナル） */
+  --color-overdue: #d62828;
+  --color-today: #f59e0b;
+  --color-soon: #facc15;
+  --color-ok: #16a34a;
+
+  --font-en: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-jp: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+
+  --maxw: 1280px;
+  --gutter: clamp(16px, 4vw, 48px);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-jp);
+  font-feature-settings: "palt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+a { color: inherit; text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.hero {
+  background: var(--color-bg-invert);
+  color: var(--color-fg-invert);
+  border-bottom: 1px solid var(--color-bg-invert);
+}
+.hero__inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: clamp(36px, 7vw, 96px) var(--gutter) clamp(28px, 5vw, 64px);
+}
+.hero__brand {
+  font-family: var(--font-en);
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  font-size: 12px;
+  margin: 0 0 28px;
+  opacity: 0.7;
+}
+.hero__mission {
+  font-weight: 900;
+  font-size: clamp(28px, 5.4vw, 56px);
+  line-height: 1.35;
+  margin: 0 0 48px;
+  letter-spacing: -0.01em;
+}
+.hero__meta {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(255,255,255,0.18);
+  padding-top: 24px;
+}
+.hero__meta-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.hero__meta-label {
+  font-family: var(--font-en);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  opacity: 0.6;
+}
+.hero__meta-value {
+  font-family: var(--font-en);
+  font-weight: 500;
+  font-size: 14px;
+}
+.hero__meta-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+.btn {
+  font-family: var(--font-jp);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 10px 18px;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  letter-spacing: 0.04em;
+  transition: background 0.15s, color 0.15s;
+}
+.btn--solid {
+  background: var(--color-fg-invert);
+  color: var(--color-bg-invert);
+  border-color: var(--color-fg-invert);
+}
+.btn--solid:hover { opacity: 0.85; }
+.btn--ghost:hover {
+  background: var(--color-fg-invert);
+  color: var(--color-bg-invert);
+}
+.btn--sm { font-size: 12px; padding: 6px 12px; }
+.main .btn--ghost {
+  color: var(--color-fg);
+  border-color: var(--color-fg);
+}
+.main .btn--ghost:hover {
+  background: var(--color-fg);
+  color: var(--color-bg);
+}
+
+/* =========================================================
+   STATUS BAR
+   ========================================================= */
+.status-bar {
+  background: var(--color-overdue);
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.status-bar--info { background: #0a0a0a; }
+.status-bar--warn { background: var(--color-today); color: #0a0a0a; }
+
+/* =========================================================
+   MAIN / SECTION
+   ========================================================= */
+.main {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: clamp(40px, 6vw, 72px) var(--gutter);
+}
+.section {
+  margin-bottom: clamp(48px, 7vw, 96px);
+}
+.section__head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+  border-bottom: 2px solid var(--color-fg);
+  padding-bottom: 14px;
+  margin-bottom: 28px;
+}
+.section__title {
+  font-family: var(--font-en);
+  font-weight: 900;
+  font-size: clamp(20px, 2.4vw, 28px);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.section__sub {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+/* =========================================================
+   KPI
+   ========================================================= */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0;
+  border: 1px solid var(--color-line);
+}
+.kpi {
+  padding: 28px 24px;
+  border-right: 1px solid var(--color-line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.kpi:last-child { border-right: none; }
+@media (max-width: 720px) {
+  .kpi { border-right: none; border-bottom: 1px solid var(--color-line); }
+  .kpi:last-child { border-bottom: none; }
+}
+.kpi__label {
+  font-family: var(--font-en);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--color-muted);
+}
+.kpi__value {
+  font-family: var(--font-en);
+  font-weight: 900;
+  font-size: clamp(40px, 5vw, 64px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.kpi__sub {
+  font-size: 12px;
+  color: var(--color-muted);
+}
+.kpi--skeleton {
+  background: repeating-linear-gradient(
+    45deg,
+    #f4f4f4,
+    #f4f4f4 8px,
+    #fafafa 8px,
+    #fafafa 16px
+  );
+  min-height: 130px;
+}
+
+/* =========================================================
+   DEADLINE ALERTS
+   ========================================================= */
+.alert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.alert-card {
+  border: 1px solid var(--color-line);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.alert-card__head {
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--color-line);
+}
+.alert-card__title {
+  font-family: var(--font-en);
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+.alert-card__count {
+  font-family: var(--font-en);
+  font-weight: 900;
+  font-size: 28px;
+}
+.alert-card--overdue .alert-card__head { background: var(--color-overdue); color: #fff; border-color: var(--color-overdue); }
+.alert-card--today .alert-card__head { background: var(--color-today); color: #0a0a0a; border-color: var(--color-today); }
+.alert-card--soon .alert-card__head { background: var(--color-soon); color: #0a0a0a; border-color: var(--color-soon); }
+
+.alert-card__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.alert-card__item {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--color-line-soft);
+  font-size: 13px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 12px;
+  align-items: baseline;
+}
+.alert-card__item:last-child { border-bottom: none; }
+.alert-card__item-title {
+  font-weight: 500;
+  line-height: 1.4;
+}
+.alert-card__item-meta {
+  font-family: var(--font-en);
+  font-size: 11px;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+.alert-card__item-sub {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  color: var(--color-muted);
+}
+.alert-card__empty {
+  padding: 28px 18px;
+  font-size: 13px;
+  color: var(--color-muted);
+  text-align: center;
+}
+
+/* =========================================================
+   GOALS TREE
+   ========================================================= */
+.goals-tree { display: flex; flex-direction: column; gap: 0; }
+.goal-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 200px 80px;
+  gap: 16px;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--color-line-soft);
+}
+.goal-row:first-child { border-top: 1px solid var(--color-line); }
+.goal-row--ANNUAL { background: rgba(0,0,0,0.04); padding-left: 12px; padding-right: 12px; }
+.goal-row--Q { padding-left: 28px; }
+.goal-row--MONTH { padding-left: 56px; }
+.goal-row__type {
+  font-family: var(--font-en);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: var(--color-muted);
+}
+.goal-row__title {
+  font-weight: 700;
+  font-size: 14px;
+}
+.goal-row__title-kpi {
+  font-size: 11px;
+  color: var(--color-muted);
+  font-weight: 400;
+  margin-top: 2px;
+}
+.goal-row__bar {
+  height: 8px;
+  background: var(--color-line-soft);
+  position: relative;
+}
+.goal-row__bar-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--color-fg);
+}
+.goal-row__pct {
+  font-family: var(--font-en);
+  font-weight: 700;
+  font-size: 14px;
+  text-align: right;
+}
+@media (max-width: 720px) {
+  .goal-row { grid-template-columns: 60px 1fr 60px; }
+  .goal-row__bar { grid-column: 1 / -1; }
+}
+
+/* =========================================================
+   MATRIX (担当者 × 状態)
+   ========================================================= */
+.matrix-wrap { overflow-x: auto; }
+.matrix {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.matrix th, .matrix td {
+  padding: 10px 12px;
+  border: 1px solid var(--color-line-soft);
+  text-align: center;
+}
+.matrix th {
+  background: var(--color-bg);
+  font-family: var(--font-en);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+.matrix th:first-child, .matrix td:first-child {
+  text-align: left;
+  font-weight: 700;
+}
+.matrix td.matrix__cell {
+  font-family: var(--font-en);
+  font-weight: 700;
+  font-size: 14px;
+}
+.matrix td.matrix__cell--zero { color: #ccc; }
+.matrix tr:hover td { background: rgba(0,0,0,0.03); }
+.matrix tfoot td {
+  font-weight: 900;
+  background: var(--color-bg-invert);
+  color: var(--color-fg-invert);
+  border-color: var(--color-bg-invert);
+}
+
+/* =========================================================
+   DEPT BARS
+   ========================================================= */
+.dept-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.dept-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 100px;
+  gap: 16px;
+  align-items: center;
+}
+.dept-row__label {
+  font-weight: 700;
+  font-size: 13px;
+}
+.dept-row__bar {
+  display: flex;
+  height: 28px;
+  border: 1px solid var(--color-line);
+}
+.dept-row__seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-en);
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.dept-row__seg--未着手 { background: #c0c0c0; color: #0a0a0a; }
+.dept-row__seg--進行中 { background: #0a0a0a; }
+.dept-row__seg--完了 { background: #16a34a; }
+.dept-row__seg--保留 { background: #6b6b6b; }
+.dept-row__total {
+  font-family: var(--font-en);
+  font-weight: 700;
+  font-size: 13px;
+  text-align: right;
+}
+@media (max-width: 720px) {
+  .dept-row { grid-template-columns: 1fr; }
+}
+
+/* =========================================================
+   FILTER BAR
+   ========================================================= */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.filter-bar__input,
+.filter-bar__select {
+  font-family: var(--font-jp);
+  font-size: 13px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-line);
+  background: #fff;
+  color: var(--color-fg);
+  outline: none;
+}
+.filter-bar__input { flex: 1 1 240px; }
+.filter-bar__input:focus,
+.filter-bar__select:focus { background: #fafafa; }
+
+.table-meta {
+  font-family: var(--font-en);
+  font-size: 11px;
+  color: var(--color-muted);
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+
+/* =========================================================
+   TASKS TABLE
+   ========================================================= */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-line);
+}
+.tasks-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.tasks-table th, .tasks-table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-line-soft);
+  vertical-align: top;
+}
+.tasks-table thead th {
+  background: var(--color-fg);
+  color: var(--color-bg);
+  font-family: var(--font-en);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.tasks-table tr:hover td { background: rgba(0,0,0,0.03); }
+.tasks-table__id {
+  font-family: var(--font-en);
+  font-weight: 700;
+  white-space: nowrap;
+  width: 70px;
+}
+.tasks-table__title { font-weight: 600; line-height: 1.45; }
+.tasks-table__empty { text-align: center; padding: 40px 20px; color: var(--color-muted); }
+
+/* Status & priority pills */
+.pill {
+  display: inline-block;
+  padding: 2px 8px;
+  font-family: var(--font-en);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  border: 1px solid var(--color-line);
+  white-space: nowrap;
+}
+.pill--進行中 { background: var(--color-fg); color: var(--color-bg); }
+.pill--完了 { background: #16a34a; color: #fff; border-color: #16a34a; }
+.pill--保留 { background: #f3f3f3; color: #6b6b6b; border-color: #c8c8c8; }
+.pill--未着手 { background: #fff; color: var(--color-fg); }
+
+.pri {
+  display: inline-block;
+  font-family: var(--font-en);
+  font-weight: 900;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+.pri--高 { color: var(--color-overdue); }
+.pri--中 { color: var(--color-fg); }
+.pri--低 { color: var(--color-muted); }
+
+.deadline { font-family: var(--font-en); font-weight: 500; white-space: nowrap; }
+.deadline--overdue { color: var(--color-overdue); font-weight: 700; }
+.deadline--today { color: var(--color-today); font-weight: 700; }
+.deadline--soon { color: var(--color-fg); font-weight: 700; }
+.deadline--none { color: var(--color-muted); }
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.footer {
+  background: var(--color-bg-invert);
+  color: var(--color-fg-invert);
+  padding: 32px var(--gutter);
+  margin-top: 80px;
+}
+.footer__inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer__line {
+  font-size: 12px;
+  margin: 0;
+  opacity: 0.85;
+}
+.footer__line--mono { font-family: var(--font-en); }
+.footer a { text-decoration: underline; text-underline-offset: 4px; }
+
+/* =========================================================
+   PRINT
+   ========================================================= */
+@media print {
+  .hero, .footer { background: #fff !important; color: #000 !important; }
+  .btn, .filter-bar { display: none !important; }
+  body { color: #000; }
+}
