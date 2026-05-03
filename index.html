@@ -7,8 +7,8 @@
   <title>VAIZO OPS / Operations Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=3">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
 
@@ -19,7 +19,7 @@
       <h2 class="gate__title">合言葉を入力してください</h2>
       <form id="gateForm" class="gate__form" autocomplete="off">
         <input id="gateInput" type="password" class="gate__input" placeholder="PASSWORD" autofocus>
-        <button type="submit" class="btn btn--solid">ENTER</button>
+        <button type="submit" class="btn btn--filled">ENTER</button>
       </form>
       <p id="gateError" class="gate__error" hidden>合言葉が違います</p>
     </div>
@@ -28,92 +28,119 @@
   <!-- ============ HERO ============ -->
   <header class="hero">
     <div class="hero__inner">
-      <p class="hero__brand">VAIZO &nbsp;/&nbsp; OPERATIONS</p>
+      <div class="hero__bar">
+        <div class="hero__brand">VAIZO &nbsp;/&nbsp; OPERATIONS</div>
+        <div class="hero__viewer">
+          <span class="hero__personal-tag">PERSONAL VIEW</span>
+          <span class="hero__viewer-label">VIEWING AS</span>
+          <select id="viewerSelect" class="hero__viewer-select">
+            <option value="">全員（全社ビュー）</option>
+          </select>
+        </div>
+      </div>
       <h1 class="hero__mission">
         生存のためのシゴトから人類を解放し、<br>
         みんながスキに没頭できる世界をつくる。
       </h1>
       <div class="hero__meta">
-        <div class="hero__meta-left">
-          <span class="hero__meta-label">LAST SYNC</span>
-          <span id="updatedAt" class="hero__meta-value">—</span>
-        </div>
-        <div class="hero__meta-viewer">
-          <span class="hero__meta-label">VIEWING AS</span>
-          <select id="viewerSelect" class="hero__viewer-select">
-            <option value="">全員（全社ビュー）</option>
-          </select>
+        <div class="hero__meta-item">
+          <span class="meta-label">LAST SYNC</span>
+          <span id="updatedAt" class="meta-value">—</span>
         </div>
         <div class="hero__meta-actions">
-          <a id="sheetLink" class="btn btn--ghost" href="#" target="_blank" rel="noopener">スプレッドシートを開く</a>
-          <a class="btn btn--ghost" href="https://github.com/y-hashimoto-vaizo/vaizo-ops-dashboard/actions/workflows/update-data.yml" target="_blank" rel="noopener">スプシ読み取り</a>
-          <button id="refreshBtn" class="btn btn--solid" type="button">最新を取得</button>
+          <a id="sheetLink" class="btn" href="#" target="_blank" rel="noopener">スプレッドシート</a>
+          <a class="btn" href="https://github.com/y-hashimoto-vaizo/vaizo-ops-dashboard/actions/workflows/update-data.yml" target="_blank" rel="noopener">スプシ読み取り</a>
+          <button id="refreshBtn" class="btn btn--filled" type="button">最新を取得</button>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- ============ STATUS ============ -->
   <div id="statusBar" class="status-bar" hidden></div>
 
   <main class="main">
 
-    <!-- ============ KPI ============ -->
+    <!-- ============ 01 TODAY ============ -->
     <section class="section">
       <div class="section__head">
-        <h2 class="section__title">KPI</h2>
-        <p class="section__sub">全社タスクの状態サマリー</p>
+        <h2 class="section__num is-mono">01</h2>
+        <h2 class="section__title">TODAY</h2>
+        <p class="section__lede">いま動かす案件と、状況サマリ</p>
       </div>
-      <div id="kpiGrid" class="kpi-grid">
-        <div class="kpi kpi--skeleton"></div>
-        <div class="kpi kpi--skeleton"></div>
-        <div class="kpi kpi--skeleton"></div>
-        <div class="kpi kpi--skeleton"></div>
-        <div class="kpi kpi--skeleton"></div>
+
+      <div class="today">
+        <!-- NOW -->
+        <div class="now">
+          <div class="now__head">
+            <h3 class="now__title">NOW</h3>
+            <span class="now__count is-mono"><span id="nowCount">—</span></span>
+          </div>
+          <ul id="nowList" class="now__list"></ul>
+        </div>
+
+        <!-- SUMMARY -->
+        <div class="summary">
+          <div class="summary__head">
+            <h3 class="summary__title">SUMMARY</h3>
+            <p class="summary__sub" id="summarySub">—</p>
+          </div>
+          <div class="summary__grid">
+            <div class="summary__cell">
+              <span class="summary__num is-mono" id="sumInProgress">—</span>
+              <span class="summary__label">IN PROGRESS</span>
+            </div>
+            <div class="summary__cell">
+              <span class="summary__num is-mono" id="sumNotStarted">—</span>
+              <span class="summary__label">NOT STARTED</span>
+            </div>
+            <div class="summary__cell">
+              <span class="summary__num is-mono" id="sumOnHold">—</span>
+              <span class="summary__label">ON HOLD</span>
+            </div>
+            <div class="summary__cell">
+              <span class="summary__num is-mono" id="sumDone">—</span>
+              <span class="summary__label">DONE</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- THIS WEEK -->
+      <div class="week">
+        <div class="week__head">
+          <h3 class="week__title">THIS WEEK &nbsp;・&nbsp; 7 DAYS</h3>
+          <span class="week__count is-mono" id="weekCount">—</span>
+        </div>
+        <ul id="weekList" class="week__list"></ul>
       </div>
     </section>
 
-    <!-- ============ DEADLINE ALERTS ============ -->
+    <!-- ============ 02 GOALS ============ -->
     <section class="section">
       <div class="section__head">
-        <h2 class="section__title">締切アラート</h2>
-        <p class="section__sub">超過 / 今日 / 7日以内</p>
-      </div>
-      <div id="alertGrid" class="alert-grid"></div>
-    </section>
-
-    <!-- ============ GOALS TREE ============ -->
-    <section class="section">
-      <div class="section__head">
+        <h2 class="section__num is-mono">02</h2>
         <h2 class="section__title">GOALS</h2>
-        <p class="section__sub">年 / Q / 月 ツリー進捗</p>
+        <p class="section__lede">年 / 四半期 / 月の北極星</p>
       </div>
-      <div id="goalsTree" class="goals-tree"></div>
+      <div id="goalsTree" class="goals"></div>
     </section>
 
-    <!-- ============ MATRIX ============ -->
+    <!-- ============ 03 PORTFOLIO ============ -->
     <section class="section">
       <div class="section__head">
-        <h2 class="section__title">担当者 × 状態</h2>
-        <p class="section__sub">VAIZER 別の積み上がり</p>
+        <h2 class="section__num is-mono">03</h2>
+        <h2 class="section__title">PORTFOLIO</h2>
+        <p class="section__lede">事業部 × VAIZER の積み上がり（数字＝タスク件数）</p>
       </div>
-      <div id="matrix" class="matrix-wrap"></div>
+      <div id="portfolio" class="portfolio"></div>
     </section>
 
-    <!-- ============ DEPT BARS ============ -->
+    <!-- ============ 04 ALL TASKS ============ -->
     <section class="section">
       <div class="section__head">
-        <h2 class="section__title">事業部別 進捗</h2>
-        <p class="section__sub">未着手 / 進行中 / 完了 / 保留</p>
-      </div>
-      <div id="deptBars" class="dept-bars"></div>
-    </section>
-
-    <!-- ============ TASKS TABLE ============ -->
-    <section class="section">
-      <div class="section__head">
-        <h2 class="section__title">TASKS</h2>
-        <p class="section__sub">検索・フィルタ・締切順ソート可</p>
+        <h2 class="section__num is-mono">04</h2>
+        <h2 class="section__title">ALL TASKS</h2>
+        <p class="section__lede">検索・フィルタ・ソート</p>
       </div>
 
       <div class="filter-bar">
@@ -128,18 +155,16 @@
           <option value="id">ID順</option>
           <option value="status">状態順</option>
         </select>
-        <button id="resetFilter" class="btn btn--ghost btn--sm" type="button">リセット</button>
+        <button id="resetFilter" class="btn btn--ink btn--sm" type="button">リセット</button>
       </div>
 
-      <div class="table-meta">
-        <span id="taskCount">—</span>
-      </div>
+      <div class="table-meta"><span id="taskCount">—</span></div>
 
       <div class="table-wrap">
-        <table id="tasksTable" class="tasks-table">
+        <table class="tasks">
           <thead>
             <tr>
-              <th class="tasks-table__id">ID</th>
+              <th class="tasks__id">ID</th>
               <th>タイトル</th>
               <th>事業部</th>
               <th>担当</th>
@@ -150,7 +175,7 @@
             </tr>
           </thead>
           <tbody id="tasksTbody">
-            <tr><td colspan="8" class="tasks-table__empty">読み込み中…</td></tr>
+            <tr><td colspan="8" class="tasks__empty">読み込み中…</td></tr>
           </tbody>
         </table>
       </div>
@@ -158,15 +183,14 @@
 
   </main>
 
-  <!-- ============ FOOTER ============ -->
   <footer class="footer">
     <div class="footer__inner">
-      <p class="footer__line">VAIZO Inc.&nbsp;&nbsp;/&nbsp;&nbsp;Operations OS&nbsp;&nbsp;/&nbsp;&nbsp;Source: VAIZO_OPS_Sheet</p>
-      <p class="footer__line footer__line--mono">v1.0.0 &nbsp;&nbsp;/&nbsp;&nbsp; <a href="https://github.com/y-hashimoto-vaizo/vaizo-ops-dashboard" target="_blank" rel="noopener">github</a></p>
+      <div>VAIZO Inc. &nbsp;/&nbsp; Operations OS &nbsp;/&nbsp; Source: VAIZO_OPS_Sheet</div>
+      <div>v2.0 &nbsp;/&nbsp; <a href="https://github.com/y-hashimoto-vaizo/vaizo-ops-dashboard" target="_blank" rel="noopener">github</a></div>
     </div>
   </footer>
 
-  <script src="config.js?v=3"></script>
-  <script src="app.js?v=3"></script>
+  <script src="config.js?v=4"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>
