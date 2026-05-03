@@ -105,6 +105,46 @@ button {
   gap: 12px;
   flex-wrap: wrap;
 }
+.hero__meta-viewer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 220px;
+}
+.hero__viewer-select {
+  font-family: var(--font-jp);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 8px 12px;
+  background: transparent;
+  color: var(--color-fg-invert);
+  border: 1px solid var(--color-fg-invert);
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M0 0l5 6 5-6z' fill='white'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+.hero__viewer-select:focus { background-color: rgba(255,255,255,0.08); }
+.hero__viewer-select option { background: var(--color-bg-invert); color: var(--color-fg-invert); }
+.hero--personal { background: #1a1a1a; }
+.hero--personal::before {
+  content: "PERSONAL VIEW";
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  font-family: var(--font-en);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.24em;
+  color: #facc15;
+  border: 1px solid #facc15;
+  padding: 4px 10px;
+}
+.hero { position: relative; }
 
 /* =========================================================
    BUTTONS

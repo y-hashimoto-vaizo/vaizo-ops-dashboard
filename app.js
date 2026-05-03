@@ -11,7 +11,8 @@
     tasks: [],
     goals: [],
     masters: { depts: [], owners: [], statuses: [], priorities: [] },
-    filter: { search: '', dept: '', owner: '', status: '', priority: '', sort: 'deadline' }
+    filter: { search: '', dept: '', owner: '', status: '', priority: '', sort: 'deadline' },
+    viewer: ''  // 選択中のVAIZER。空 = 全社ビュー
   };
 
   // ============ BOOT ============
@@ -68,10 +69,17 @@
     document.getElementById('filterPriority').addEventListener('change', onFilterChange);
     document.getElementById('sortKey').addEventListener('change', onFilterChange);
     document.getElementById('resetFilter').addEventListener('click', resetFilter);
+    document.getElementById('viewerSelect').addEventListener('change', (e) => setViewer(e.target.value));
 
-    // クエリパラメータでオーナー先選択（個人ビュー）
+    // 個人ビューの初期決定: URL ?owner= > localStorage > 空（全社）
     const params = new URLSearchParams(location.search);
-    if (params.get('owner')) STATE.filter.owner = params.get('owner');
+    const urlOwner = params.get('owner');
+    const stored = localStorage.getItem('vaizo_ops_viewer');
+    STATE.viewer = urlOwner || stored || '';
+    if (STATE.viewer) {
+      document.querySelector('.hero').classList.add('hero--personal');
+      STATE.filter.owner = STATE.viewer;
+    }
 
     loadAndRender(false);
     setInterval(() => loadAndRender(false), CFG.refreshIntervalMs || 300000);
@@ -216,19 +224,50 @@
     fill('filterOwner', STATE.masters.owners, STATE.filter.owner);
     fill('filterStatus', STATE.masters.statuses, STATE.filter.status);
     fill('filterPriority', STATE.masters.priorities, STATE.filter.priority);
+    fill('viewerSelect', STATE.masters.owners, STATE.viewer);
+  }
+
+  // 個人ビューの場合は viewer のタスクだけ、それ以外は全社
+  function viewableTasks() {
+    return STATE.viewer
+      ? STATE.tasks.filter(t => t.owner === STATE.viewer)
+      : STATE.tasks;
+  }
+
+  function setViewer(name) {
+    STATE.viewer = name || '';
+    const hero = document.querySelector('.hero');
+    if (STATE.viewer) {
+      localStorage.setItem('vaizo_ops_viewer', STATE.viewer);
+      hero.classList.add('hero--personal');
+    } else {
+      localStorage.removeItem('vaizo_ops_viewer');
+      hero.classList.remove('hero--personal');
+    }
+    // URLに反映（共有しやすくするため）
+    const url = new URL(location.href);
+    if (STATE.viewer) url.searchParams.set('owner', STATE.viewer);
+    else url.searchParams.delete('owner');
+    history.replaceState({}, '', url);
+    // テーブルの担当フィルタも連動
+    STATE.filter.owner = STATE.viewer;
+    document.getElementById('filterOwner').value = STATE.viewer;
+    render();
   }
 
   // ---------- KPI ----------
   function renderKPI() {
-    const counts = countBy(STATE.tasks, t => t.status || '未設定');
-    const total = STATE.tasks.length;
+    const tasks = viewableTasks();
+    const counts = countBy(tasks, t => t.status || '未設定');
+    const total = tasks.length;
     const inProgress = counts['進行中'] || 0;
     const notStarted = counts['未着手'] || 0;
     const onHold = counts['保留'] || 0;
     const done = counts['完了'] || 0;
 
+    const subSuffix = STATE.viewer ? `（${STATE.viewer}担当）` : '';
     const kpis = [
-      { label: 'TOTAL', value: total, sub: '登録タスク' },
+      { label: 'TOTAL', value: total, sub: '登録タスク' + subSuffix },
       { label: 'IN PROGRESS', value: inProgress, sub: '進行中' },
       { label: 'NOT STARTED', value: notStarted, sub: '未着手' },
       { label: 'ON HOLD', value: onHold, sub: '保留' },
@@ -250,7 +289,7 @@
     const today = [];
     const soon = [];
 
-    STATE.tasks.forEach(t => {
+    viewableTasks().forEach(t => {
       if (t.status === '完了') return;
       const d = daysFromToday(t.deadlineDate);
       if (d === null) return;
@@ -350,11 +389,12 @@
 
   // ---------- DEPT BARS ----------
   function renderDeptBars() {
-    const depts = Array.from(new Set(STATE.tasks.map(t => t.dept).filter(Boolean))).sort();
+    const sourceTasks = viewableTasks();
+    const depts = Array.from(new Set(sourceTasks.map(t => t.dept).filter(Boolean))).sort();
     const statuses = ['未着手', '進行中', '完了', '保留'];
 
     document.getElementById('deptBars').innerHTML = depts.map(d => {
-      const tasks = STATE.tasks.filter(t => t.dept === d);
+      const tasks = sourceTasks.filter(t => t.dept === d);
       const total = tasks.length;
       const segs = statuses.map(s => {
         const cnt = tasks.filter(t => t.status === s).length;

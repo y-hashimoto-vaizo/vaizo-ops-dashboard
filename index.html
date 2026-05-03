@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
 
@@ -37,6 +37,12 @@
         <div class="hero__meta-left">
           <span class="hero__meta-label">LAST SYNC</span>
           <span id="updatedAt" class="hero__meta-value">—</span>
+        </div>
+        <div class="hero__meta-viewer">
+          <span class="hero__meta-label">VIEWING AS</span>
+          <select id="viewerSelect" class="hero__viewer-select">
+            <option value="">全員（全社ビュー）</option>
+          </select>
         </div>
         <div class="hero__meta-actions">
           <a id="sheetLink" class="btn btn--ghost" href="#" target="_blank" rel="noopener">スプレッドシートを開く</a>
@@ -160,7 +166,7 @@
     </div>
   </footer>
 
-  <script src="config.js?v=2"></script>
-  <script src="app.js?v=2"></script>
+  <script src="config.js?v=3"></script>
+  <script src="app.js?v=3"></script>
 </body>
 </html>
