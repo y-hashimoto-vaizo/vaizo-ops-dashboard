@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=5">
+  <link rel="stylesheet" href="styles.css?v=6">
 </head>
 <body>
 
@@ -48,9 +48,18 @@
           <span id="updatedAt" class="meta-value">—</span>
         </div>
         <div class="hero__meta-actions">
-          <a id="sheetLink" class="btn" href="#" target="_blank" rel="noopener">スプレッドシート</a>
-          <a class="btn" href="https://github.com/y-hashimoto-vaizo/vaizo-ops-dashboard/actions/workflows/update-data.yml" target="_blank" rel="noopener">スプシ読み取り</a>
-          <button id="refreshBtn" class="btn btn--filled" type="button">最新を取得</button>
+          <a id="sheetLink" class="btn btn--stack" href="#" target="_blank" rel="noopener">
+            <span class="btn__main">スプシを編集</span>
+            <span class="btn__sub">タスクの追加・更新</span>
+          </a>
+          <a class="btn btn--stack" href="https://github.com/y-hashimoto-vaizo/vaizo-ops-dashboard/actions/workflows/update-data.yml" target="_blank" rel="noopener">
+            <span class="btn__main">いま同期</span>
+            <span class="btn__sub">スプシ→画面に即反映</span>
+          </a>
+          <button id="refreshBtn" class="btn btn--stack btn--filled" type="button">
+            <span class="btn__main">画面を更新</span>
+            <span class="btn__sub">表示を読み直す</span>
+          </button>
         </div>
       </div>
     </div>
@@ -65,7 +74,7 @@
       <div class="section__head">
         <h2 class="section__num is-mono">01</h2>
         <h2 class="section__title">TODAY</h2>
-        <p class="section__lede">いま動かす案件と、状況サマリ</p>
+        <p class="section__lede">いま動かす案件</p>
       </div>
 
       <div class="today">
@@ -120,7 +129,7 @@
       <div class="section__head">
         <h2 class="section__num is-mono">02</h2>
         <h2 class="section__title">GOALS</h2>
-        <p class="section__lede">年 / 四半期 / 月の北極星</p>
+        <p class="section__lede">年・四半期・月の到達度</p>
       </div>
       <div id="goalsTree" class="goals"></div>
     </section>
@@ -130,7 +139,7 @@
       <div class="section__head">
         <h2 class="section__num is-mono">03</h2>
         <h2 class="section__title">PORTFOLIO</h2>
-        <p class="section__lede">事業部 × VAIZER の積み上がり（数字＝タスク件数）</p>
+        <p class="section__lede">事業部 × VAIZER のタスク件数</p>
       </div>
       <div id="portfolio" class="portfolio"></div>
     </section>
@@ -140,7 +149,7 @@
       <div class="section__head">
         <h2 class="section__num is-mono">04</h2>
         <h2 class="section__title">ALL TASKS</h2>
-        <p class="section__lede">検索・フィルタ・ソート</p>
+        <p class="section__lede">全件を検索・絞り込み</p>
       </div>
 
       <div class="filter-bar">
@@ -190,7 +199,7 @@
     </div>
   </footer>
 
-  <script src="config.js?v=5"></script>
-  <script src="app.js?v=5"></script>
+  <script src="config.js?v=6"></script>
+  <script src="app.js?v=6"></script>
 </body>
 </html>
