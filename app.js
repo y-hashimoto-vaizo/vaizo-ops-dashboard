@@ -149,6 +149,9 @@
   function parseDeadline(raw) {
     if (!raw) return null;
     const s = String(raw).trim();
+    // 「5月8日(金)」のような曜日カッコ付きはプレースホルダ扱い（締切未設定）
+    if (/\d+月\d+日\s*[\(（][日月火水木金土][\)）]/.test(s)) return null;
+    // ISO形式優先（「2026-04-22(超過)」のような括弧付きにも対応）
     const iso = s.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
     if (iso) return new Date(+iso[1], +iso[2] - 1, +iso[3]);
     const jp = s.match(/(\d{1,2})月(\d{1,2})日/);
