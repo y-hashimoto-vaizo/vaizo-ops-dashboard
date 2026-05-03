@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
 </head>
 <body>
 
@@ -52,10 +52,10 @@
             <span class="btn__main">スプシを編集</span>
             <span class="btn__sub">タスクの追加・更新</span>
           </a>
-          <a class="btn btn--stack" href="https://github.com/y-hashimoto-vaizo/vaizo-ops-dashboard/actions/workflows/update-data.yml" target="_blank" rel="noopener">
+          <button id="syncBtn" class="btn btn--stack" type="button">
             <span class="btn__main">いま同期</span>
             <span class="btn__sub">スプシ→画面に即反映</span>
-          </a>
+          </button>
           <button id="refreshBtn" class="btn btn--stack btn--filled" type="button">
             <span class="btn__main">画面を更新</span>
             <span class="btn__sub">表示を読み直す</span>
@@ -66,6 +66,32 @@
   </header>
 
   <div id="statusBar" class="status-bar" hidden></div>
+
+  <!-- ============ SYNC HELP MODAL ============ -->
+  <div id="syncModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="syncModalTitle">
+    <div class="modal__overlay" data-close></div>
+    <div class="modal__panel">
+      <div class="modal__head">
+        <span class="modal__eyebrow is-mono">SYNC GUIDE</span>
+        <button class="modal__close" data-close type="button" aria-label="閉じる">×</button>
+      </div>
+      <div class="modal__body">
+        <h3 id="syncModalTitle" class="modal__title">スプシの内容を画面にすぐ反映する</h3>
+        <p class="modal__lede">「GitHubを開く」を押すと別タブで Actions ページが開きます。そこで4ステップ。</p>
+        <ol class="modal__steps">
+          <li><span class="modal__step-no is-mono">01</span><span>ページ右側の <strong>「Run workflow ▾」</strong>（灰色のドロップダウン）を押す</span></li>
+          <li><span class="modal__step-no is-mono">02</span><span>出てきたメニューの <strong>緑色「Run workflow」</strong>ボタンを押す</span></li>
+          <li><span class="modal__step-no is-mono">03</span><span>1〜2分待つ。一覧に <strong>緑のチェック ✓</strong> が付いたら同期完了</span></li>
+          <li><span class="modal__step-no is-mono">04</span><span>このダッシュボードに戻って <strong>「画面を更新」</strong> を押す</span></li>
+        </ol>
+        <p class="modal__note">何もしなくても 30 分以内に自動同期されます。「いま同期」は急いで反映したい時だけでOK。</p>
+      </div>
+      <div class="modal__foot">
+        <button class="btn btn--ink" data-close type="button">あとで</button>
+        <a id="syncOpenLink" class="btn btn--ink-filled" href="https://github.com/y-hashimoto-vaizo/vaizo-ops-dashboard/actions/workflows/update-data.yml" target="_blank" rel="noopener">GitHubを開く</a>
+      </div>
+    </div>
+  </div>
 
   <main class="main">
 
@@ -199,7 +225,7 @@
     </div>
   </footer>
 
-  <script src="config.js?v=6"></script>
-  <script src="app.js?v=6"></script>
+  <script src="config.js?v=7"></script>
+  <script src="app.js?v=7"></script>
 </body>
 </html>

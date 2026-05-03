@@ -34,6 +34,15 @@
     document.getElementById('resetFilter').addEventListener('click', resetFilter);
     document.getElementById('viewerSelect').addEventListener('change', (e) => setViewer(e.target.value));
 
+    // Sync help modal
+    const syncModal = document.getElementById('syncModal');
+    const openSyncModal = () => { syncModal.hidden = false; };
+    const closeSyncModal = () => { syncModal.hidden = true; };
+    document.getElementById('syncBtn').addEventListener('click', openSyncModal);
+    syncModal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeSyncModal));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !syncModal.hidden) closeSyncModal(); });
+    document.getElementById('syncOpenLink').addEventListener('click', () => setTimeout(closeSyncModal, 200));
+
     // ビュアー初期決定: URL ?owner= > localStorage > 全社
     const urlOwner = new URLSearchParams(location.search).get('owner');
     const stored = localStorage.getItem('vaizo_ops_viewer');
