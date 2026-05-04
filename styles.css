@@ -665,6 +665,68 @@ button { font-family: inherit; cursor: pointer; }
 .deadline--none { color: var(--c-line-soft); font-weight: 400; }
 
 /* =========================================================
+   05 WEEKLY MEETING
+   ========================================================= */
+.agenda { border: 1px solid var(--c-line); }
+.agenda__list { list-style: none; margin: 0; padding: 0; counter-reset: agenda; }
+.agenda__item, .agenda__total {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  align-items: center;
+  column-gap: 24px;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--c-line-soft);
+  counter-increment: agenda;
+  position: relative;
+}
+.agenda__item::before {
+  content: counter(agenda, decimal-leading-zero);
+  position: absolute;
+  left: 24px;
+  top: 18px;
+  font-family: var(--font-en);
+  font-weight: 800;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--c-mute);
+}
+.agenda__item { padding-left: 64px; }
+.agenda__item:last-of-type { border-bottom: 1px solid var(--c-line); }
+.agenda__total {
+  background: var(--c-ink);
+  color: var(--c-paper);
+  border-bottom: none;
+  padding-left: 24px;
+}
+.agenda__time {
+  font-family: var(--font-en);
+  font-weight: 900;
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.agenda__unit {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--c-mute);
+  margin-left: 4px;
+}
+.agenda__total .agenda__unit { color: var(--c-invert-mute); }
+.agenda__what {
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.agenda__sub {
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--c-mute);
+  margin-left: 8px;
+}
+.agenda__total .agenda__what { font-weight: 800; }
+
+/* =========================================================
    FOOTER
    ========================================================= */
 .footer {
